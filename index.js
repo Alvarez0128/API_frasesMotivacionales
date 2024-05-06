@@ -5,7 +5,7 @@ const port = 3000;
 
 
 
-app.get('/',(req,res)=>{
+app.get('/index',(req,res)=>{
     res.send('API de frases motivacionales By C3S4R')
 })
 
@@ -70,7 +70,7 @@ function obtenerFraseAleatoria() {
     return frasesMotivacionales[indice];
 }
 
-app.get('/frase',(req,res)=>{
+app.get('/',(req,res)=>{
     try {
         // Obtener una frase aleatoria
         const fraseAleatoria = obtenerFraseAleatoria();
