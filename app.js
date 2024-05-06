@@ -1,4 +1,12 @@
-const http = require('http');
+const express = require('express');
+
+const app = express();
+const port = 3000;
+
+
+app.get('/',(req,res)=>{
+    res.send('API de frases motivacionales By C3S4R')
+})
 
 // Array de frases motivacionales
 const frasesMotivacionales = [
@@ -61,26 +69,21 @@ function obtenerFraseAleatoria() {
     return frasesMotivacionales[indice];
 }
 
-// Crear el servidor HTTP
-const server = http.createServer((req, res) => {
-    if (req.method === 'GET' && req.url === '/frase') {
-        // Configurar encabezados de respuesta
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        
+app.get('/frase',(req,res)=>{
+    try {
         // Obtener una frase aleatoria
         const fraseAleatoria = obtenerFraseAleatoria();
-        
+        // Establecer la codificación de caracteres en UTF-8
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
+
         // Enviar la frase como respuesta
         res.end(JSON.stringify({ frase: fraseAleatoria }));
-    } else {
-        // Si la ruta no es válida, devolver un error 404
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('404 Not Found');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error interno del servidor');
     }
-});
+})
 
-// Escuchar en el puerto 3000
-const PORT = 3000;
-server.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`Servidor escuchando en http://localhost:${port}`);
 });
